@@ -1,60 +1,35 @@
+import asyncio
+from distutils.command.config import config
 from aiogram import Bot, executor, types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 import sqlite3
+
 import cmd
+from handlers.common import register_handlers_common
+from handlers.tat_to_ru import register_handlers_tat_to_ru
 
 #ПРОПИСАТЬ ЛОГГИНГ
+async def main():
+    bot = Bot(token = "5287896214:AAE6tyQqjUrggIoRAPGWMuFgYdQwmyu5m2M", parse_mode=types.ParseMode.HTML)
+    dp = Dispatcher(bot, storage=MemoryStorage())
 
-bot = Bot(token="5287896214:AAE6tyQqjUrggIoRAPGWMuFgYdQwmyu5m2M", parse_mode=types.ParseMode.HTML)
-dp = Dispatcher(bot)
+    conn = sqlite3.connect("databasetg.db")
+    cursor = conn.cursor()
 
-conn = sqlite3.connect("databasetg.db")
-cursor = conn.cursor()
-
-cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
-conn.commit()
-
-def keyboard_main(keyboard):
-    keyboard.add(types.KeyboardButton(text=cmd.buttonOne))
-    keyboard.add(types.KeyboardButton(text=cmd.buttonTwo))
-   
-
-@dp.message_handler(commands=['start', 'welcome', 'about'])
-async def start(message:types.Message):
-    keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    keyboard_main(keyboard)
-    await message.answer("НАПИСАТЬ ПРИВЕТСТВЕННОЕ СООБЩЕНИЕ. О ЧЁМ, ЗАЧЕМ. ДОБАВИТЬ ИНЛАЙН КНОПКИ", reply_markup=keyboard)
-    
-
-@dp.message_handler(Text(equals=cmd.buttonOne))
-async def new_word(message:types.Message):
-    print(message.text)
-    await message.answer("Напиши слово на русском языке и перевод на английском")
-
-@dp.message_handler(Text)
-async def get_word(message:types.Message):
-    keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    keyboard_main(keyboard)
-    msg = message.text
-    list = msg.split()
-    ru = list[0]
-    eng = list[1]
-    cursor.execute("""INSERT INTO vocab 
-                  VALUES("{ru}", "{eng}")
-                  """)
+    cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
     conn.commit()
-    await message.answer("Найс", reply_markup=keyboard)  
 
+    register_handlers_tat_to_ru(dp)
+    register_handlers_common(dp)
+    # register_handlers_more(dp)
 
-@dp.message_handler(Text(equals=cmd.buttonTwo))
-async def words_list(message:types.Message):
-    cursor.execute("SELECT * FROM vocab;")
-    print(cursor.fetchone())
+    # await set_commands(bot)
 
-
+    await dp.start_polling()
 
 if __name__ == "__main__":
-    executor.start_polling(dp,skip_updates=True)
+    asyncio.run(main())
