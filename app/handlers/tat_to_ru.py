@@ -1,9 +1,16 @@
+from cgitb import text
+from email import message
 from itertools import chain
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
-import cmd 
+
+import cmd, logging, keyboards
+
+
+
+logger = logging.getLogger(__name__)
 
 ru_alphabet=[]
 a = ord('а')
@@ -35,17 +42,25 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
     await state.update_data(chosen_ru_word=message.text.lower())
     await TranslateWord.waiting_for_tat_word.set()
     messageR = message.text.lower()
-    print(messageR)
-    await message.answer("Отлично! Теперь впиши <b>татарский</b> перевод:")
+    logger.info(f"RU-WORD {message.text.upper()}")
+    await message.answer("Отлично! Теперь впиши <b>татарский</b> перевод:", reply_markup=keyboards.keyboard_tat_inline())
+
+async def send_letter(call:types.CallbackQuery):
+    await call.message.answer("OK")
+    print("OK")
+    await call.answer()
 
 async def tat_word_chosen(message:types.Message, state:FSMContext):
     messageT = message.text.lower()
     user_data = await state.get_data()
     await message.answer(f"{user_data['chosen_ru_word']} - {message.text.lower()}\n")
     await message.answer("Добавлено! Можешь добавить больше слов.", )
+    logger.info(f"TAT-WORD {message.text.upper()}")
     await state.finish()
 
 def register_handlers_tat_to_ru(dp: Dispatcher):
     dp.register_message_handler(ru_word, Text(equals=cmd.buttonOne), state="*")
     dp.register_message_handler(ru_word_chosen, state=TranslateWord.waiting_for_ru_word)
     dp.register_message_handler(tat_word_chosen, state=TranslateWord.waiting_for_tat_word)
+    dp.register_callback_query_handler(send_letter, Text(endswith="o"))
+    dp.register_callback_query_handler(send_letter, Text(endswith="e"))

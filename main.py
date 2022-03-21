@@ -1,5 +1,6 @@
 import asyncio
 from distutils.command.config import config
+from json import load
 from aiogram import Bot, executor, types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
@@ -7,14 +8,27 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 import sqlite3
+import logging
+
+from app.config_reader import load_config
+logger = logging.getLogger(__name__)
 
 import cmd
-from handlers.common import register_handlers_common
-from handlers.tat_to_ru import register_handlers_tat_to_ru
+from app.handlers.common import register_handlers_common
+from app.handlers.tat_to_ru import register_handlers_tat_to_ru
 
 #ПРОПИСАТЬ ЛОГГИНГ
+
 async def main():
-    bot = Bot(token = "5287896214:AAE6tyQqjUrggIoRAPGWMuFgYdQwmyu5m2M", parse_mode=types.ParseMode.HTML)
+    logging.basicConfig(
+        level = logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+    logger.error("Starting bot")
+
+    config = load_config('config/main.ini')
+
+    bot = Bot(token = config.tg_bot.token, parse_mode=types.ParseMode.HTML)
     dp = Dispatcher(bot, storage=MemoryStorage())
 
     conn = sqlite3.connect("databasetg.db")
