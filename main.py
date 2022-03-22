@@ -11,6 +11,7 @@ import sqlite3
 import logging
 
 from app.config_reader import load_config
+from app.handlers.my_words import register_handlers_my_words
 logger = logging.getLogger(__name__)
 
 import cmd
@@ -34,12 +35,12 @@ async def main():
     conn = sqlite3.connect("databasetg.db")
     cursor = conn.cursor()
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
-    conn.commit()
+    # cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
+    # conn.commit()
 
     register_handlers_tat_to_ru(dp)
     register_handlers_common(dp)
-    # register_handlers_more(dp)
+    register_handlers_my_words(dp)
 
     # await set_commands(bot)
 
