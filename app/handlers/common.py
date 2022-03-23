@@ -1,8 +1,5 @@
-from aiogram import Bot, executor, types, Dispatcher
-from aiogram.dispatcher.filters import Text
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
-import cmd, keyboards
+from aiogram import types, Dispatcher
+import keyboards
 
 
 async def start(message:types.Message):

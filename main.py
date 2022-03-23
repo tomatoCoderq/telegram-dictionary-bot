@@ -1,10 +1,5 @@
 import asyncio
-from distutils.command.config import config
-from json import load
-from aiogram import Bot, executor, types, Dispatcher
-from aiogram.dispatcher.filters import Text
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram import Bot, types, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 import sqlite3
@@ -32,11 +27,10 @@ async def main():
     bot = Bot(token = config.tg_bot.token, parse_mode=types.ParseMode.HTML)
     dp = Dispatcher(bot, storage=MemoryStorage())
 
-    conn = sqlite3.connect("databasetg.db")
+    conn = sqlite3.connect("database/databasetg.db")
     cursor = conn.cursor()
 
-    # cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
-    # conn.commit()
+    cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
 
     register_handlers_tat_to_ru(dp)
     register_handlers_common(dp)
