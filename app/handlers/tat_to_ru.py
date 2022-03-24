@@ -58,18 +58,12 @@ async def tat_word_chosen(message:types.Message, state:FSMContext):
 
 #ДОПИСАТЬ ОТПРАВКУ НУЖНЫХ БУКОВ
 async def send_letter(call:types.CallbackQuery, state:FSMContext):
-    if Text(endswith="o"):
-        await call.message.answer(cmd.buttonO)
-    elif Text(endswith="e"):
-            await call.message.answer(cmd.buttonE)
-    if Text(endswith="z"):
-        await call.message.answer(cmd.buttonZ)
-    elif Text(endswith="n"):
-        await call.message.answer(cmd.buttonN)
-    if Text(endswith="y"):
-        await call.message.answer(cmd.buttonY)
-    elif Text(endswith="h"):
-        await call.message.answer(cmd.buttonH)
+    await call.message.answer(cmd.buttonO)
+    await call.message.answer(cmd.buttonE)
+    await call.message.answer(cmd.buttonZ)
+    await call.message.answer(cmd.buttonN)
+    await call.message.answer(cmd.buttonY)
+    await call.message.answer(cmd.buttonH)
     await call.answer()
 
 async def ru_word_chosen(message:types.Message, state:FSMContext):
@@ -106,9 +100,4 @@ def register_handlers_tat_to_ru(dp: Dispatcher):
     dp.register_message_handler(tat_word, Text(equals=cmd.buttonOne), state="*")
     dp.register_message_handler(tat_word_chosen, state=TranslateWord.waiting_for_tat_word)
     dp.register_message_handler(ru_word_chosen, state=TranslateWord.waiting_for_ru_word)
-    dp.register_callback_query_handler(send_letter, Text(endswith="o"), state="*")
-    dp.register_callback_query_handler(send_letter, Text(endswith="e"), state="*")
-    dp.register_callback_query_handler(send_letter, Text(endswith="z"), state="*")
-    dp.register_callback_query_handler(send_letter, Text(endswith="n"), state="*")
-    dp.register_callback_query_handler(send_letter, Text(endswith="y"), state="*")
-    dp.register_callback_query_handler(send_letter, Text(endswith="h"), state="*")
+    dp.register_callback_query_handler(send_letter, Text(startswith="letter"), state="*")
