@@ -79,7 +79,7 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
     await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
     logger.info(f"RU-WORD {message.text.upper()}")
     cursor.execute(f"INSERT INTO vocab VALUES (?,?)", para)
-    conn.commit() # ОСТАВМИТЬ 
+    conn.commit() # ОСТАВИТЬ 
     logger.info(f"ADDED {para} to database")
     await state.finish()
 
