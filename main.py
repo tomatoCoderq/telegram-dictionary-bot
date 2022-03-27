@@ -6,12 +6,14 @@ import sqlite3
 import logging
 
 from app.config_reader import load_config
+from app.handlers.add_new_collect import register_handlers_add_new_collect
 from app.handlers.my_words import register_handlers_my_words
 logger = logging.getLogger(__name__)
 
 import cmd
 from app.handlers.common import register_handlers_common
 from app.handlers.tat_to_ru import register_handlers_tat_to_ru
+from app.handlers.add_new_collect import register_handlers_add_new_collect
 
 #ПРОПИСАТЬ ЛОГГИНГ
 
@@ -35,6 +37,7 @@ async def main():
     register_handlers_tat_to_ru(dp)
     register_handlers_common(dp)
     register_handlers_my_words(dp)
+    register_handlers_add_new_collect(dp)
 
     # await set_commands(bot)
 

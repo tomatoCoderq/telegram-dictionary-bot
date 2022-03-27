@@ -1,5 +1,5 @@
-buttonOne = "Добавить слово"
-buttonTwo = "Мои слова"
+buttonOne = "✏️Добавить слово✏️"
+buttonTwo = "📕Мои подборки📕"
 buttonO = chr(1257)
 buttonE = chr(1241)
 buttonZ = chr(1175)

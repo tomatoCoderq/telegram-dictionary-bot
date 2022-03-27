@@ -42,7 +42,7 @@ class TranslateWord(StatesGroup):
     waiting_for_ru_word = State()
 
 async def tat_word(message:types.Message):
-    await message.answer("Слово на <b>татарском</b>:", reply_markup=keyboards.keyboard_tat_inline())
+    await message.answer("Впишите слово на <b>татарском</b> языке:\nНажмите кнопку ниже, если вам нужны татарские буквы", reply_markup=keyboards.keyboard_tat_inline())
     await TranslateWord.waiting_for_tat_word.set()
 
 async def tat_word_chosen(message:types.Message, state:FSMContext):
@@ -54,7 +54,7 @@ async def tat_word_chosen(message:types.Message, state:FSMContext):
     await state.update_data(chosen_tat_word=message.text.lower())
     await TranslateWord.waiting_for_ru_word.set()
     logger.info(f"TAT-WORD {message.text.upper()}")
-    await message.answer("Отлично! Теперь впиши <b>русский</b> перевод:")
+    await message.answer("<i>Отлично!</i> Теперь впиши <b>русский</b> перевод:")
 
 #ДОПИСАТЬ ОТПРАВКУ НУЖНЫХ БУКОВ
 async def send_letter(call:types.CallbackQuery, state:FSMContext):
@@ -77,7 +77,7 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
         cursor.execute(f"INSERT INTO vocab VALUES (?,?)", para)
         logger.info(f"ADDED {para} TO DATABASE")
         conn.commit() 
-        await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
+        await message.answer(f"<i>Готово!</i> Вы добавили:\n<b>{user_data['chosen_tat_word']}</b> - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
     else:
         cursor.execute("select * from vocab")      
         for i in cursor.fetchall():
@@ -89,7 +89,7 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
                 cursor.execute(f"INSERT INTO vocab VALUES (?,?)", para)
                 logger.info(f"ADDED {para} TO DATABASE")  
                 conn.commit() 
-                await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
+                await message.answer(f"<i>Готово!</i> Вы добавили:\n<b>{user_data['chosen_tat_word']}</b> - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
                 break
     conn.commit() 
     logger.info(f"RU-WORD {message.text.upper()}")
