@@ -9,16 +9,17 @@ cursor = conn.cursor()
 logger = logging.getLogger(__name__)
 
 async def list_of_words(message: types.Message):
-    cursor.execute("select * from vocab")
+    message_send = ''
     n = 0 
-    # print("AAAAJDAOKJDOAJDOIDJAOI")
-    # print(cursor.fetchall())
+    cursor.execute("select * from vocab")
     if len(cursor.fetchall()):
         cursor.execute("select * from vocab")
         for i in cursor.fetchall():
-            await message.answer(f"{n}. {i[0]} - {i[1]}", reply_markup=keyboards.keyboard_main())
+            message_send += f"{n}. <b>{i[0]}</b>-{i[1]}\n\n"
             logger.info(f"GOT FROM DATABASE: {n}. {i[0]} - {i[1]}")
             n+=1
+        await message.answer(message_send, reply_markup=keyboards.keyboard_main())
+
     else:
         await message.answer("Ваш словарик пустой!", reply_markup=keyboards.keyboard_main())
         logger.info("EMPTY")
