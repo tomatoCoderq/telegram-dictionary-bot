@@ -15,9 +15,10 @@ async def list_of_words(message: types.Message):
     if len(cursor.fetchall()):
         cursor.execute("select * from vocab")
         for i in cursor.fetchall():
-            message_send += f"{n}. <b>{i[0]}</b>-{i[1]}\n\n"
-            logger.info(f"GOT FROM DATABASE: {n}. {i[0]} - {i[1]}")
-            n+=1
+            if i[0]==message.from_user.id:
+                message_send += f"{n}. <b>{i[1]}</b>-{i[2]}\n\n"
+                logger.info(f"GOT FROM DATABASE: {n}. {i[1]} - {i[2]}")
+                n+=1
         await message.answer(message_send, reply_markup=keyboards.keyboard_main())
 
     else:

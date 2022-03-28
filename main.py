@@ -30,7 +30,7 @@ async def main():
     conn = sqlite3.connect("database/databasetg.db")
     cursor = conn.cursor()
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS vocab(word, translation)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS vocab(id, word, translation)")
 
     register_handlers_tat_to_ru(dp)
     register_handlers_common(dp)

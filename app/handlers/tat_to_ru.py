@@ -71,10 +71,10 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
         await message.answer("Пожалуйста, впишите слово на <b>русском</b> языке")
         return
     user_data = await state.get_data()
-    para = [t_word, message.text.lower()]
+    para = [message.from_user.id, t_word, message.text.lower()]
     cursor.execute("select * from vocab")   
     if cursor.fetchall() == []:
-        cursor.execute(f"INSERT INTO vocab VALUES (?,?)", para)
+        cursor.execute(f"INSERT INTO vocab VALUES (?,?,?)", para)
         logger.info(f"ADDED {para} TO DATABASE")
         conn.commit() 
         await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
@@ -86,10 +86,10 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
                 logger.info(f"{para} ALREADY EXIST IN VOCAB")
                 break 
             else:
-                cursor.execute(f"INSERT INTO vocab VALUES (?,?)", para)
+                cursor.execute(f"INSERT INTO vocab VALUES (?,?,?)", para)
                 logger.info(f"ADDED {para} TO DATABASE")  
                 conn.commit() 
-                await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
+                await message.answer(f"<i>Готово!</i>Вы добавили:\n<b>{user_data['chosen_tat_word']}</b> - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
                 break
     conn.commit() 
     logger.info(f"RU-WORD {message.text.upper()}")
