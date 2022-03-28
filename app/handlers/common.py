@@ -4,10 +4,10 @@ import keyboards
 
 async def start(message:types.Message):
     await message.answer(f"""Привет, <b>{message.from_user.full_name}!</b>
-Тебя приветствует <b>YourDictionaryBot</b>. YourDictionaryBot - это твой личный словарик, 
-с помощью которого ты можешь заниматься изучением иностранных языков""", reply_markup=keyboards.keyboard_main())
+Привет, я система <b>Retiree-Care</b>. 
+Мы позволяем людям <i>всегда</i> быть на связе со своими пожилыми родственниками.""", reply_markup=keyboards.keyboard_main())
 
 
 def register_handlers_common(dp: Dispatcher):
-    dp.register_message_handler(start, commands=["start", "hello", "welcome", "about"])
+    dp.register_message_handler(start, commands=["start", "hello", "about"])
 
