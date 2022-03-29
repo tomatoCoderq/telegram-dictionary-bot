@@ -11,7 +11,6 @@ conn = sqlite3.connect("database/databasetg.db")
 cursor = conn.cursor()
 logger = logging.getLogger(__name__)
 
-
 tat_alphabet=[]
 a = ord('а')
 for i in range(a,a+32):
@@ -77,11 +76,11 @@ async def ru_word_chosen(message:types.Message, state:FSMContext):
         cursor.execute(f"INSERT INTO vocab VALUES (?,?,?)", para)
         logger.info(f"ADDED {para} TO DATABASE")
         conn.commit() 
-        await message.answer(f"{user_data['chosen_tat_word']} - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
+        await message.answer(f"<i>Готово!</i>Вы добавили:\n<b>{user_data['chosen_tat_word']}</b> - {message.text.lower()}\n", reply_markup=keyboards.keyboard_main())
     else:
         cursor.execute("select * from vocab")      
         for i in cursor.fetchall():
-            if list(i) == para:
+            if i[1] == para[1]:
                 await message.answer("Такое слово уже есть!", reply_markup=keyboards.keyboard_main())  
                 logger.info(f"{para} ALREADY EXIST IN VOCAB")
                 break 

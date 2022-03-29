@@ -6,6 +6,7 @@ import sqlite3
 import logging
 
 from app.config_reader import load_config
+from app.handlers.delete_words import register_handlers_delete
 from app.handlers.my_words import register_handlers_my_words
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ async def main():
     register_handlers_tat_to_ru(dp)
     register_handlers_common(dp)
     register_handlers_my_words(dp)
+    register_handlers_delete(dp)
 
     # await set_commands(bot)
 

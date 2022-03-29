@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 async def list_of_words(message: types.Message):
     message_send = ''
-    n = 0 
+    n = 1
     cursor.execute("select * from vocab")
     if len(cursor.fetchall()):
         cursor.execute("select * from vocab")

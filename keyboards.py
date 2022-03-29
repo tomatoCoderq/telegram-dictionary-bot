@@ -1,3 +1,4 @@
+from cgitb import text
 from aiogram import Bot, executor, types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
@@ -6,7 +7,8 @@ import cmd
 
 def keyboard_main():
     buttons = [types.KeyboardButton(text=cmd.buttonOne),  
-               types.KeyboardButton(text=cmd.buttonTwo)]
+               types.KeyboardButton(text=cmd.buttonTwo),
+               types.KeyboardButton(text=cmd.buttonThree)]
     keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     keyboard.add(*buttons)
     return keyboard
