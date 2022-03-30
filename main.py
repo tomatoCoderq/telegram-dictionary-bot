@@ -1,20 +1,16 @@
-import asyncio
 from aiogram import Bot, types, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-
-import sqlite3
-import logging
 
 from app.config_reader import load_config
 from app.handlers.delete_words import register_handlers_delete
 from app.handlers.my_words import register_handlers_my_words
-logger = logging.getLogger(__name__)
 
-import cmd
 from app.handlers.common import register_handlers_common
 from app.handlers.tat_to_ru import register_handlers_tat_to_ru
 
-#ПРОПИСАТЬ ЛОГГИНГ
+import sqlite3, logging, asyncio
+logger = logging.getLogger(__name__)
+
 
 async def main():
     logging.basicConfig(

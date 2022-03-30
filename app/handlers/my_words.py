@@ -20,7 +20,6 @@ async def list_of_words(message: types.Message):
                 logger.info(f"GOT FROM DATABASE: {n}. {i[1]} - {i[2]}")
                 n+=1
         await message.answer(message_send, reply_markup=keyboards.keyboard_main())
-
     else:
         await message.answer("Ваш словарик пустой!", reply_markup=keyboards.keyboard_main())
         logger.info("EMPTY")

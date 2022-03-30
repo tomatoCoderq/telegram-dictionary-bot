@@ -5,8 +5,6 @@ from aiogram.dispatcher.filters import Text
 
 import cmd, logging, keyboards, sqlite3
 
-from numpy import empty
-
 conn = sqlite3.connect("database/databasetg.db")
 cursor = conn.cursor()
 logger = logging.getLogger(__name__)
