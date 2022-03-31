@@ -1,10 +1,13 @@
+import logging
+import sqlite3
+
 from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-
-import cmd, logging, keyboards, sqlite3
+import cmd
+import keyboards
 
 conn = sqlite3.connect("database/databasetg.db")
 cursor = conn.cursor()
