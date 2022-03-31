@@ -45,11 +45,11 @@ async def delete_word(message:types.Message, state:FSMContext):
                 delete = message.text.lower()
                 delete_s += delete
                 cursor.execute("DELETE FROM vocab WHERE word=?", (delete,))
-                await message.answer(f"<i>Готов!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
+                await message.answer(f"<i>Готово!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
             elif message.text.lower() == i[2]:
                 delete = message.text.lower()
                 cursor.execute("DELETE FROM vocab WHERE translation=?", (delete,))
-                await message.answer(f"<i>Готов!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
+                await message.answer(f"<i>Готово!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
     conn.commit()
     await state.finish()
 

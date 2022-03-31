@@ -33,7 +33,6 @@ async def list_of_words(message: types.Message):
     except MessageTextIsEmpty:
         await message.answer("Ваш словарик пустой! Добавьте слово", reply_markup=keyboards.keyboard_main())
 
-
 def register_handlers_my_words(dp: Dispatcher):
     dp.register_message_handler(list_of_words, Text(equals=cmd.buttonTwo))
 

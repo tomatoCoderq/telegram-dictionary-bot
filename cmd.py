@@ -1,6 +1,6 @@
-buttonOne = "Добавить слово"
-buttonTwo = "Мои слова"
-buttonThree = "Удалить слово"
+buttonOne = "✏️Добавить слово✏️"
+buttonTwo = "📔Мои слова📔"
+buttonThree = "🗑Удалить слово🗑"
 buttonO = chr(1257)
 buttonE = chr(1241)
 buttonZ = chr(1175)
