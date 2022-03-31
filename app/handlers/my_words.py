@@ -9,10 +9,14 @@ cursor = conn.cursor()
 logger = logging.getLogger(__name__)
 
 async def list_of_words(message: types.Message):
+    send = ''
     cursor.execute("select * from collections")
-    await message.answer("Ваши подборки: ", reply_markup=keyboards.keyboard_create_inline())
+    # await message.answer("Ваши подборки: ", reply_markup=keyboards.keyboard_create_inline())
     for i in cursor.fetchall():
-        await message.answer("Ваши подборки:", reply_markup=keyboards.keyboard_generator(i[1]))
+        keyboards.add_in_array(i[1])
+    send += "Ваши подборки:"
+    await message.answer(send, reply_markup=keyboards.keyboard_generator())
+
 
 
 def register_handlers_my_words(dp: Dispatcher):

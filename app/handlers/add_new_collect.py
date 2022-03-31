@@ -33,18 +33,5 @@ async def collections_name(message:types.Message, state:FSMContext):
 
 
 def register_handlers_add_new_collect(dp:Dispatcher):
-    dp.register_callback_query_handler(new_collect, Text(equals="create_1"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_2"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_3"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_4"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_5"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_6"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_7"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_8"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_9"), state="*")
-    dp.register_callback_query_handler(new_collect, Text(equals="create_10"), state="*")
-
-
-
-
+    dp.register_callback_query_handler(new_collect, Text(equals="create_b"), state="*")
     dp.register_message_handler(collections_name, state=NewCollections.waiting_for_name)

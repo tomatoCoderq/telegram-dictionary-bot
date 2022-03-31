@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 import cmd
 
 n = 0
+buttons_g = []
 
 
 def keyboard_main():
@@ -29,18 +30,17 @@ def keyboard_create_inline():
     return keyboard_c
 
 def keyboard_generator(text_b=f"Подборка {n+1}"):
-    global n
-    button_g = [types.KeyboardButton(text=text_b, callback_data="create_1"),
-    types.KeyboardButton(text=text_b, callback_data="create_2"),
-    types.KeyboardButton(text=text_b, callback_data="create_3"),
-    types.KeyboardButton(text=text_b, callback_data="create_4"),
-    types.KeyboardButton(text=text_b, callback_data="create_5"),
-    types.KeyboardButton(text=text_b, callback_data="create_6"),
-    types.KeyboardButton(text=text_b, callback_data="create_7"),
-    types.KeyboardButton(text=text_b, callback_data="create_8"),
-    types.KeyboardButton(text=text_b, callback_data="create_9"),
-    types.KeyboardButton(text=text_b, callback_data="create_10"),]
+    global n 
+    global buttons_g
+    buttons_g = []
     keyboard_g = types.ReplyKeyboardMarkup(row_width=1)
-    keyboard_g.add(*button_g)
-    return keyboard_g  
+    # keyboard_g.add(*buttons_g)
+    return keyboard_g
+
+def add_in_array(message):
+    global buttons_g
+    buttons_g += message
+    print(buttons_g)
+    keyboard_main().add(*buttons_g)
+    return keyboard_main()
     
