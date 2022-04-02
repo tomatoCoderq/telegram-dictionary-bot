@@ -1,3 +1,4 @@
+from ast import Del
 import logging
 import sqlite3
 
@@ -13,7 +14,7 @@ conn = sqlite3.connect("database/databasetg.db")
 cursor = conn.cursor()
 logger = logging.getLogger(__name__)
 
-class DeleteWord(StatesGroup):
+class DeleteProcessing(StatesGroup):
     waiting_for_number = State()
 
 
@@ -56,5 +57,5 @@ async def delete_word(message:types.Message, state:FSMContext):
 
 def register_handlers_delete(dp: Dispatcher):
     dp.register_message_handler(get_number, Text(equals=cmd.buttonThree), state="*")
-    dp.register_message_handler(delete_word, state=DeleteWord.waiting_for_number)
+    dp.register_message_handler(delete_word, state=DeleteProcessing.waiting_for_number)
 

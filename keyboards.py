@@ -17,3 +17,14 @@ def keyboard_tat_inline():
     keyboard_i = types.InlineKeyboardMarkup()
     keyboard_i.add(*buttons_t)
     return keyboard_i
+
+def inlineKeyboard_languages():
+    buttons_l = [types.InlineKeyboardButton(text=cmd.tat_lang_v1, callback_data="l1"),
+                 types.InlineKeyboardButton(text=cmd.ger_lang_v1, callback_data="l2"),
+                 types.InlineKeyboardButton(text=cmd.eng_lang_v1, callback_data="l3"),
+                 types.InlineKeyboardButton(text=cmd.fr_lang_v1, callback_data="l4"),
+                 types.InlineKeyboardButton(text=cmd.sp_lang_v1, callback_data="l5")
+                ]
+    keyboard_l = types.InlineKeyboardMarkup(row_width=1)
+    keyboard_l.add(*buttons_l)
+    return keyboard_l
