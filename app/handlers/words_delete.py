@@ -5,10 +5,8 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-
+from loguru import logger
 import cmd
-
-from httpx import delete
 import keyboards
 
 class DeleteWords():
@@ -16,11 +14,9 @@ class DeleteWords():
         self.db = db
         self.on_start()
 
-
     def on_start(self):
         self.conn = sqlite3.connect("database/databasetg.db")
         self.cursor = self.conn.cursor()
-        self.logger = logging.getLogger(__name__)
 
     async def get_word(self, message: types.Message):
         message_send = ''
@@ -32,14 +28,14 @@ class DeleteWords():
             for i in self.cursor.fetchall():
                 if i[0]==message.from_user.id:
                     message_send += f"{n}. <b>{i[1]}</b>-{i[2]}\n\n"
-                    self.logger.info(f"GOT FROM DATABASE: {n}. {i[1]} - {i[2]}")
+                    logger.info(f"GOT FROM DATABASE: {n}. {i[1]} - {i[2]}")
                     n+=1
             await message.answer(message_send, reply_markup=keyboards.keyboard_main())
             await DeleteProcessing.waiting_for_word.set()
 
         else:
             await message.answer("Ваш словарик пустой!", reply_markup=keyboards.keyboard_main())
-            self.logger.info("EMPTY")
+            logger.error("EMPTY")
     
     async def delete_word(self, message: types.Message, state: FSMContext):
         delete_s = ''
@@ -51,10 +47,13 @@ class DeleteWords():
                     delete_s += delete
                     self.cursor.execute(f"DELETE FROM {self.db} WHERE word=?", (delete,))
                     await message.answer(f"<i>Готово!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
+                    logger.info(f"Word {delete} was deleted")
                 elif message.text.lower() == i[2]:
                     delete = message.text.lower()
                     self.cursor.execute(f"DELETE FROM {self.db} WHERE translation=?", (delete,))
-                    await message.answer(f"<i>Готово!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())
+                    await message.answer(f"<i>Готово!</i>\n<b>{delete}</b> было удалено", reply_markup=keyboards.keyboard_main())                          
+                    logger.info(f"Word {delete} was deleted")
+
         self.conn.commit()
         await state.finish()
     

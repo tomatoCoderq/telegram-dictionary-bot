@@ -10,10 +10,11 @@ import cmd
 import keyboards
 
 class Translation():
-    def __init__(self, language_orig, language_translation, alphabet, cut_orig, cut_translation, db):
+    def __init__(self, language_orig, language_translation, alphabet, alphabet_orig, cut_orig, cut_translation, db):
         self.language_orig = language_orig
         self.language_translation = language_translation
         self.alphabet = alphabet
+        self.alphabet_orig = alphabet_orig
         self.cut_orig = cut_orig
         self.cut_translation = cut_translation
         self.db = db
@@ -24,12 +25,12 @@ class Translation():
         self.conn = sqlite3.connect("database/databasetg.db")
         self.cursor = self.conn.cursor()
     
-    def if_in_word(self, word):
+    def if_in_word(self, word, alphabet):
         word_array = []
         for i in word:
             word_array.append(i.lower())
-        if list(filter(lambda i: i in word_array,self.alphabet)) != []:
-            self.logger.info(f"COINCIDENCES: {list(filter(lambda i: i in word_array,self.alphabet))}")
+        if list(filter(lambda i: i in word_array,alphabet)) != []:
+            self.logger.info(f"COINCIDENCES: {list(filter(lambda i: i in word_array,alphabet))}")
             return 0
 
 
@@ -38,7 +39,7 @@ class Translation():
         await TranslateWord.waiting_for_orig_word.set()
 
     async def word_in_orig_language_chosen(self, message: types.Message, state: FSMContext):
-        if self.if_in_word(message.text.lower()) != 0:
+        if self.if_in_word(message.text.lower(), self.alphabet) != 0:
             await message.answer(f"Пожалуйста, впишите слово на <b>{self.language_orig}</b> языке")
             return
         await state.update_data(chosen_orig=message.text.lower())
@@ -50,7 +51,7 @@ class Translation():
         None
 
     async def translation_chosen(self, message: types.Message, state: FSMContext):
-        if self.if_in_word(message.text.lower()) != 0:
+        if self.if_in_word(message.text.lower(), self.alphabet_orig) != 0:
             await message.answer(f"Пожалуйста, впишите слово на <b>{self.language_translation}</b> языке")
             return
         user_data = await state.get_data()

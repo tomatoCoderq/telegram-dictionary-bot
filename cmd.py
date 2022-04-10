@@ -36,17 +36,17 @@ ger_lang_v2 = "немецком"
 ger = "GER"
 vocab_ger = "vocab_ger"
 
-def german_alphabet():
-    german_alphabet = []
+def ger_alphabet():
+    ger_alphabet = []
     a = ord('a')
     for i in range(a, a+26):
-        german_alphabet.append(chr(i))
-    german_alphabet.append(chr(228))
-    german_alphabet.append(chr(246))
-    german_alphabet.append(chr(252))
-    german_alphabet.append(chr(223))
-    return german_alphabet
-print(german_alphabet())
+        ger_alphabet.append(chr(i))
+    ger_alphabet.append(chr(228))
+    ger_alphabet.append(chr(246))
+    ger_alphabet.append(chr(252))
+    ger_alphabet.append(chr(223))
+    return ger_alphabet
+print(ger_alphabet())
 
 
 #English language
